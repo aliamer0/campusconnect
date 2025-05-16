@@ -5,6 +5,7 @@ import 'firestore_service.dart';
 import 'sync_service.dart';
 import 'notification_service.dart';
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 
 class StudyGroupService {
   final DatabaseService _localDb = DatabaseService();
@@ -12,6 +13,7 @@ class StudyGroupService {
   final SyncService _syncService = SyncService();
   final NotificationService _notificationService = NotificationService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _uuid = Uuid();
 
   // study_group_service.dart - Improved group management
   Future<void> createStudyGroup(Map<String, dynamic> groupData) async {
@@ -19,19 +21,22 @@ class StudyGroupService {
     if (userId == null) throw Exception('User not authenticated');
 
     final now = DateTime.now().toIso8601String();
+    final id = _uuid.v4();
+
     final completeGroupData = {
       ...groupData,
       'creatorId': userId,
-      'members': [userId], // Creator is first member
+      'members': jsonEncode([userId]), // Store members as JSON string
       'createdAt': now,
       'updatedAt': now,
-      'isSynced': 0,
+      'isSynced': 0, // Explicit integer
+      'id': id,
+      'name': groupData['name'] ?? '',
+      'description': groupData['description'] ?? '',
+      'nextMeeting': groupData['nextMeeting'] ?? '',
     };
 
-    // First save locally
     await _localDb.insertStudyGroup(completeGroupData);
-
-    // Then sync
     await _syncService.syncStudyGroups();
   }
 
@@ -54,7 +59,7 @@ class StudyGroupService {
     Map<String, dynamic> groupData,
   ) async {
     groupData['updatedAt'] = DateTime.now().toIso8601String();
-    groupData['isSynced'] = false;
+    groupData['isSynced'] = 0;
     await _localDb.updateStudyGroup(id, groupData);
     await _syncService.syncStudyGroups();
   }

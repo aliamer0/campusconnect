@@ -45,14 +45,24 @@ class _StudyGroupChatScreenState extends State<StudyGroupChatScreen> {
     _loadLocalMessages();
   }
 
+  // Update _loadGroupData to handle members consistently
   Future<void> _loadGroupData() async {
     final groupSnapshot = await _groupReference.get();
     if (groupSnapshot.exists) {
+      final data = groupSnapshot.data() as Map<String, dynamic>;
+
+      // Ensure members is always a List<Map> for UI
+      List<Map<String, dynamic>> members = [];
+      if (data['members'] is List) {
+        members =
+            (data['members'] as List)
+                .map((e) => {'userId': e.toString()})
+                .toList();
+      }
+
       setState(() {
-        _groupData = groupSnapshot.data() as Map<String, dynamic>;
-        _members = List<Map<String, dynamic>>.from(
-          _groupData?['members'] ?? [],
-        );
+        _groupData = data;
+        _members = members;
       });
     }
   }
@@ -72,7 +82,7 @@ class _StudyGroupChatScreenState extends State<StudyGroupChatScreen> {
       'senderId': user.uid,
       'senderName': user.displayName ?? 'Anonymous',
       'timestamp': FieldValue.serverTimestamp(),
-      'isSynced': true,
+      'isSynced': 1,
     };
 
     try {
@@ -97,7 +107,7 @@ class _StudyGroupChatScreenState extends State<StudyGroupChatScreen> {
         ...message,
         'groupId': widget.groupId,
         'timestamp': DateTime.now().toIso8601String(),
-        'isSynced': false,
+        'isSynced': 0,
       });
     }
   }

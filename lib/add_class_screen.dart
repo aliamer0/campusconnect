@@ -107,7 +107,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
         'weekdays': _getSelectedWeekdays(),
         'createdAt': DateTime.now().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
-        'isSynced': false,
+        'isSynced': 0,
       };
 
       try {

@@ -16,7 +16,7 @@ class DatabaseService {
   }
 
   Future<Database> _initDatabase() async {
-    final path = join(await getDatabasesPath(), 'campus_connect4.db');
+    final path = join(await getDatabasesPath(), 'campus_connect7.db');
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
@@ -64,7 +64,7 @@ class DatabaseService {
       senderId TEXT,
       senderName TEXT,
       timestamp TEXT,
-      isSynced INTEGER
+      isSynced INTEGER DEFAULT 0
     )
   ''');
 
@@ -74,7 +74,7 @@ class DatabaseService {
     name TEXT NOT NULL,
     description TEXT,
     nextMeeting TEXT,
-    members TEXT,  -- Store as JSON string
+    members TEXT,
     createdAt TEXT,
     updatedAt TEXT,
     isSynced INTEGER DEFAULT 0,
@@ -209,5 +209,21 @@ class DatabaseService {
   Future<int> insertMessage(Map<String, dynamic> message) async {
     final db = await database;
     return await db.insert('messages', message);
+  }
+
+  Future<List<Map<String, dynamic>>> getCampusEvents() async {
+    final db = await database;
+    final events = await db.query(
+      'events',
+      where: 'isCampusEvent = ?',
+      whereArgs: [1],
+    );
+
+    // Convert back to bool for the application
+    return events
+        .map(
+          (event) => {...event, 'isCampusEvent': event['isCampusEvent'] == 1},
+        )
+        .toList();
   }
 }

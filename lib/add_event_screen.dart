@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'event_service.dart';
+import 'auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({super.key});
@@ -15,6 +17,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   final _locationController = TextEditingController();
   final _descriptionController = TextEditingController();
   final EventService _eventService = EventService();
+  var _auth = FirebaseAuth.instance;
 
   DateTime? _startDate;
   TimeOfDay? _startTime;
@@ -107,6 +110,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
         'startTime': startDateTime.toIso8601String(),
         'endTime': endDateTime.toIso8601String(),
         'isCampusEvent': _isCampusEvent,
+        'userId': _auth.currentUser?.uid ?? '', // Never null
         'createdAt': DateTime.now().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
       };

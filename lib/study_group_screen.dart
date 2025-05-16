@@ -9,6 +9,7 @@ import 'study_group_service.dart';
 import 'sync_service.dart';
 import 'add_study_group_screen.dart';
 import 'study_group_chat_screen.dart';
+import 'dart:convert';
 
 class StudyGroupSectionScreen extends StatefulWidget {
   const StudyGroupSectionScreen({super.key});
@@ -43,6 +44,14 @@ class _StudyGroupSectionScreenState extends State<StudyGroupSectionScreen> {
   List<Map<String, dynamic>> _filterGroups(List<Map<String, dynamic>> groups) {
     var filtered =
         groups.where((group) {
+          // Parse members from JSON string
+          List<String> members = [];
+          try {
+            members = List<String>.from(jsonDecode(group['members'] ?? '[]'));
+          } catch (e) {
+            members = [];
+          }
+
           final matchesSearch =
               group['name'].toLowerCase().contains(
                 _searchQuery.toLowerCase(),
@@ -52,7 +61,6 @@ class _StudyGroupSectionScreenState extends State<StudyGroupSectionScreen> {
               );
 
           if (_selectedFilter == 'My Groups') {
-            final members = List<String>.from(group['members'] ?? []);
             return matchesSearch &&
                 members.contains(_authService.getCurrentUser()?.uid);
           }
@@ -73,7 +81,14 @@ class _StudyGroupSectionScreenState extends State<StudyGroupSectionScreen> {
     final userId = _authService.getCurrentUser()?.uid;
     if (userId == null) return;
 
-    final members = List<String>.from(group['members'] ?? []);
+    // Parse members from JSON string
+    List<String> members = [];
+    try {
+      members = List<String>.from(jsonDecode(group['members'] ?? '[]'));
+    } catch (e) {
+      members = [];
+    }
+
     final isMember = members.contains(userId);
 
     try {
@@ -237,7 +252,14 @@ class _StudyGroupSectionScreenState extends State<StudyGroupSectionScreen> {
 
   Widget _buildStudyGroupCard(Map<String, dynamic> group) {
     final userId = _authService.getCurrentUser()?.uid;
-    final members = List<String>.from(group['members'] ?? []);
+
+    List<String> members = [];
+    try {
+      members = List<String>.from(jsonDecode(group['members'] ?? '[]'));
+    } catch (e) {
+      members = [];
+    }
+
     final isMember = userId != null && members.contains(userId);
     final memberCount = members.length;
 

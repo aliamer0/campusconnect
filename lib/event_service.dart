@@ -18,16 +18,28 @@ class EventService {
     if (userId == null) throw Exception('User not authenticated');
 
     final now = DateTime.now().toIso8601String();
-    final completeEventData = {
+
+    // Create a copy for local database (convert bool to int)
+    final localEventData = {
       ...eventData,
       'userId': userId,
       'createdAt': now,
       'updatedAt': now,
       'isSynced': 0,
+      'isCampusEvent':
+          eventData['isCampusEvent'] ? 1 : 0, // Convert to int for SQLite
+    };
+
+    // Create a copy for Firestore (keep as bool)
+    final firestoreEventData = {
+      ...eventData,
+      'userId': userId,
+      'createdAt': now,
+      'updatedAt': now,
     };
 
     // Save locally first
-    await _localDb.insertEvent(completeEventData);
+    await _localDb.insertEvent(localEventData);
 
     // Schedule notification if it's a future event
     if (eventData['startTime'] != null) {
@@ -62,7 +74,7 @@ class EventService {
 
   Future<void> updateEvent(String id, Map<String, dynamic> eventData) async {
     eventData['updatedAt'] = DateTime.now().toIso8601String();
-    eventData['isSynced'] = false;
+    eventData['isSynced'] = 0;
     await _localDb.updateEvent(id, eventData);
     await _syncService.syncEvents();
   }

@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'study_group_service.dart';
 import 'database_service.dart';
 import 'sync_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddStudyGroupScreen extends StatefulWidget {
   const AddStudyGroupScreen({super.key});
@@ -72,13 +75,14 @@ class _AddStudyGroupScreenState extends State<AddStudyGroupScreen> {
 
   Future<void> _createStudyGroup() async {
     if (_formKey.currentState!.validate()) {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       final groupData = {
         'name': _nameController.text,
         'description': _descriptionController.text,
-        'members': [], // Will be added when creator joins
+        'members': jsonEncode([userId]), // Will be added when creator joins
         'createdAt': DateTime.now().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
-        'isSynced': false,
+        'isSynced': 0,
       };
 
       if (_nextMeetingDate != null && _nextMeetingTime != null) {
