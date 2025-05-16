@@ -1,0 +1,18 @@
+# This is a generated file; do not edit or check into version control.
+cloud_firestore=/home/ubuntu/.pub-cache/hosted/pub.dev/cloud_firestore-5.6.7/
+cloud_firestore_web=/home/ubuntu/.pub-cache/hosted/pub.dev/cloud_firestore_web-4.4.7/
+firebase_auth=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_auth-5.5.3/
+firebase_auth_web=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_auth_web-5.14.2/
+firebase_core=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_core-3.13.0/
+firebase_core_web=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_core_web-2.22.0/
+firebase_database=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_database-11.3.5/
+firebase_database_web=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_database_web-0.2.6+11/
+firebase_messaging=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_messaging-15.2.5/
+firebase_messaging_web=/home/ubuntu/.pub-cache/hosted/pub.dev/firebase_messaging_web-3.10.5/
+flutter_local_notifications=/home/ubuntu/.pub-cache/hosted/pub.dev/flutter_local_notifications-19.2.0/
+flutter_local_notifications_linux=/home/ubuntu/.pub-cache/hosted/pub.dev/flutter_local_notifications_linux-6.0.0/
+flutter_local_notifications_windows=/home/ubuntu/.pub-cache/hosted/pub.dev/flutter_local_notifications_windows-1.0.0/
+fluttertoast=/home/ubuntu/.pub-cache/hosted/pub.dev/fluttertoast-8.2.12/
+sqflite=/home/ubuntu/.pub-cache/hosted/pub.dev/sqflite-2.4.2/
+sqflite_android=/home/ubuntu/.pub-cache/hosted/pub.dev/sqflite_android-2.4.1/
+sqflite_darwin=/home/ubuntu/.pub-cache/hosted/pub.dev/sqflite_darwin-2.4.2/

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "19132566447",
+    "project_id": "campusconnect-3a34e",
+    "storage_bucket": "campusconnect-3a34e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19132566447:android:c98e1529d2832a5fecfd5a",
+        "android_client_info": {
+          "package_name": "com.ali.campusconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdS34CQjs5LhWEu79D5K2vbGZmB34u7co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
